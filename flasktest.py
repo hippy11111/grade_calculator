@@ -9,11 +9,8 @@ app = Flask(__name__)
 load_dotenv()
 app.secret_key = os.getenv("SECRET")
 
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
 
-@app.route("/login", methods=["POST","GET"])
+@app.route("/", methods=["POST","GET"])
 def login():
     if request.method == "POST":
         username = request.form.get("username")
@@ -30,7 +27,7 @@ def login():
 def main():
     courselist = session.get('courselist')
     if not courselist:
-        return redirect(url_for("login"))
+        return redirect(url_for("/"))
     selected_course = courselist[0]
     selected_quarter = "Q2"
     assignments = []
