@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Main</title>
+    </head>
+    <body>
+        <h2>Welcome</h2>
+        <div class="dropdown" id="course_dropdown">
+            <form method="POST">
+                <label for="courses">Select a Course:</label>
+                <select name="course_selection" id="courses">
+                    {% for course in courselist %}
+                        <option value="{{course}}" {% if course == selected_course %}selected{% endif %}>{{course}}</option>
+                    {% endfor %}
+                </select>
+                <label for="mp">Select a Marking Period:</label>
+                <select name="mp_selection" id="mp">
+                    <option value="Q1" {% if selected_quarter == 'Q1' %}selected{% endif %}>Q1</option>
+                    <option value="Q2" {% if selected_quarter == 'Q2' %}selected{% endif %}>Q2</option>
+                    <option value="S1" {% if selected_quarter == 'S1' %}selected{% endif %}>S1</option>
+                    <option value="Q3" {% if selected_quarter == 'Q3' %}selected{% endif %}>Q3</option>
+                    <option value="Q4" {% if selected_quarter == 'Q4' %}selected{% endif %}>Q4</option>
+                    <option value="S2" {% if selected_quarter == 'S2' %}selected{% endif %}>S2</option>
+                </select>
+                <button type="submit">submit!</button>
+            </form>
+        </div>
+        <br>
+        {% if assignments %}
+            <h3>Assignments:</h3>
+            <table id="table" class="table">
+                <thead>
+                    <tr>
+                        <th id="category_col">Category</th>
+                        <th id="name_col">Name</th>
+                        <th id="score_col">Score (changeable)</th>
+                    </tr>
+                </thead>
+                <tbody role="grid">
+                    {% for x in range(assignments[0] | length) %}
+                        <tr role="row">
+                            <td class="category_col">{{ assignments[0][x] }}</td>
+                            <td class="name_col">{{ assignments[1][x] }}</td>
+                            <td class="score_col"> <input type="number" id="score_numer" name="score_numer"  size="3" value={{assignments[2][x]}}> / {{ assignments[3][x] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <!-- {% if "Q" in selected_quarter %}
+
+            {% endif %} -->
+
+        {% endif %}
+    </body>
+</html>
