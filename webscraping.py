@@ -16,15 +16,14 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 
-BROWSER_PATH = r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
-OPTIONS = webdriver.ChromeOptions()
-OPTIONS.binary_location = BROWSER_PATH
-OPTIONS.add_experimental_option("detach", True)
-
-
+BROWSER_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 options = ChromeOptions()
-options.add_argument("--headless")
-driver = webdriver.Chrome(options=OPTIONS)
+options.binary_location = BROWSER_PATH
+options.add_experimental_option("detach", True)
+
+options.add_argument("--headless=new")
+
+driver = webdriver.Chrome(options=options)
 
 def signIn(username, password):    
     driver.get("https://spprep.powerschool.com/public")
@@ -67,7 +66,7 @@ def getCorrectCourseLink(course, mp):
                 quarter_link = driver.find_element(By.XPATH, xpath).get_attribute("href")
                 return quarter_link
             if(mp == "Q2"):
-                xpath = "//*[@id='" + course_id + "']/td[13]/a"
+                xpath = "//*[@id='" + course_id + "']/td[14]/a"
                 quarter_link = driver.find_element(By.XPATH, xpath).get_attribute("href")
                 return quarter_link
             if(mp == "S1"):

@@ -36,12 +36,19 @@ def main():
 
         selected_course = request.form.get('course_selection')
         selected_quarter = request.form.get('mp_selection')
+
         try:
             course_link = webscraping.getCorrectCourseLink(selected_course, selected_quarter)
             if course_link:
                 assignments = webscraping.getQuarterAssignmentInfo(course_link)
         except:
             print("Error while scraping.")
+            return render_template("main.html", courselist=courselist)
+        # if "Q" in selected_quarter:
+        #     quarter_grade = 0.0
+        #     score_numers = []
+        #     score_denoms = assignments[3]
+
     return render_template("main.html", courselist=courselist, selected_course=selected_course, selected_quarter=selected_quarter, assignments=assignments)
 
 if __name__ == "__main__":
