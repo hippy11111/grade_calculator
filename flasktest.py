@@ -14,22 +14,21 @@ def login():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        
-        # Use webscraping.signIn to get a driver instance
-        driver = webscraping.signIn(username, password)
-        
-        if not webscraping.checkSignIn(driver):
-            driver.quit()  # Close the driver if login failed
-            return render_template("login.html", error="Invalid username or password")
-        
-        # Get course list using the same driver
-        courselist = webscraping.getCourseList(driver)
-        session['courselist'] = courselist
-        session['driver'] = True  # just a flag to indicate driver exists (cannot store driver object in session)
-        # keep driver alive for scraping later by passing it to functions via a global dict
-        app.config['DRIVER'] = driver
-        
-        return redirect(url_for("main"))
+
+        driver = webscraping.createDriver()
+        try:
+            webscraping.signIn(driver, username, password)
+            if not webscraping.checkSignIn(driver):
+                return render_template("login.html", error="Invalid username or password")
+            
+            courselist = webscraping.getCourseList(driver)
+            session['courselist'] = courselist
+            session['username'] = username
+            session['password'] = password  # store credentials temporarily for scraping
+            return redirect(url_for("main"))
+        finally:
+            driver.quit()
+
     return render_template("login.html")
 
 
@@ -38,10 +37,9 @@ def main():
     courselist = session.get('courselist')
     if not courselist:
         return redirect(url_for("login"))
-    
-    driver = app.config.get('DRIVER')
-    if not driver:
-        return redirect(url_for("login"))
+
+    username = session.get('username')
+    password = session.get('password')
 
     selected_course = courselist[0]
     selected_quarter = "Q2"
@@ -50,26 +48,25 @@ def main():
     if request.method == "POST":
         selected_course = request.form.get('course_selection')
         selected_quarter = request.form.get('mp_selection')
+
+        driver = webscraping.createDriver()
         try:
+            webscraping.signIn(driver, username, password)
             course_link = webscraping.getCorrectCourseLink(driver, selected_course, selected_quarter)
             if course_link:
                 assignments = webscraping.getQuarterAssignmentInfo(driver, course_link)
         except Exception as e:
             print("Error while scraping:", e)
-            return render_template("main.html", courselist=courselist)
+        finally:
+            driver.quit()
 
-    return render_template("main.html",
-                           courselist=courselist,
-                           selected_course=selected_course,
-                           selected_quarter=selected_quarter,
-                           assignments=assignments)
-
-
-@app.teardown_appcontext
-def close_driver(exception):
-    driver = app.config.get('DRIVER')
-    if driver:
-        driver.quit()  # ensure Chrome closes when app stops
+    return render_template(
+        "main.html",
+        courselist=courselist,
+        selected_course=selected_course,
+        selected_quarter=selected_quarter,
+        assignments=assignments
+    )
 
 
 if __name__ == "__main__":
