@@ -7,7 +7,7 @@ import os
 
 app = Flask(__name__)
 load_dotenv()
-app.secret_key = os.getenv("SECRET")
+app.secret_key = os.getenv("SECRET", "dev-secret-key-change-in-production")
 
 
 @app.route("/", methods=["POST","GET"])
