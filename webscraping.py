@@ -15,15 +15,17 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.chrome.service import Service
 
-BROWSER_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 options = ChromeOptions()
-options.binary_location = BROWSER_PATH
-options.add_experimental_option("detach", True)
-
 options.add_argument("--headless=new")
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
+options.add_argument("--disable-gpu")
+options.binary_location = "/nix/store/n6m949x5r35yf75yfaw504cb37n0fxcw-chromium-114.0.5735.106/bin/chromium"
 
-driver = webdriver.Chrome(options=options)
+service = Service(executable_path="/nix/store/n4qcnqy0isnvxcpcgv6i2z9ql9wsxksw-chromedriver-114.0.5735.90/bin/chromedriver")
+driver = webdriver.Chrome(service=service, options=options)
 
 def signIn(username, password):    
     driver.get("https://spprep.powerschool.com/public")
