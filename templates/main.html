@@ -39,7 +39,7 @@
                     </tr>
                 </thead>
                 <form method="POST">
-                    <tbody role="grid">
+                    <tbody id="tbody" role="grid">
                         {% for x in range(assignments[0] | length) %}
                             <tr role="row" data-category="{{ assignments[0][x] }}">
                                 <td class="category_col">{{ assignments[0][x] }}</td>
@@ -47,6 +47,8 @@
                                 <td class="score_col"> <input type="number" id="score_numer" class="score-input" data-denominator="{{ assignments[3][x] }}" size="3" value={{assignments[2][x]}}> / {{ assignments[3][x] }}</td>
                             </tr>
                         {% endfor %}
+                        <tr role="row"><td><button type="button" id="add">Add Assignment</button></td></tr>
+                        <tr><td><button id="reset" type="reset">Reset</button></td></tr>
                     </tbody>
                 </form>
             </table>
@@ -72,13 +74,15 @@
                     let input = row.querySelector('.score-input');
                     let denom = parseFloat(input.dataset.denominator) || 0;
                     let numer = parseFloat(input.value) || 0;
-
+                    if(isNaN(parseFloat(input.value))){
+                        denom = 0;
+                    }
                     if (!(category in categoryTotals)) {
                         categoryTotals[category] = { earned: 0, possible: 0 };
                     }
-
                     categoryTotals[category].earned += numer;
                     categoryTotals[category].possible += denom;
+
                 });
 
                 let weightedGrade = 0;
@@ -96,12 +100,17 @@
                     weightedGrade += avg * weight;
                     weightTotal += weight;
                 }
+                if(weightTotal < 1){
+                    weightedGrade = weightedGrade / weightTotal;
+                }
 
                 const gradeDisplay = document.getElementById('live-grade');
-                if (weightTotal === 0) {
-                    gradeDisplay.textContent = "N/A";
-                } else {
-                    gradeDisplay.textContent = (weightedGrade * 100).toFixed(2) + "%";
+                if (gradeDisplay) {
+                    if (weightTotal === 0) {
+                        gradeDisplay.textContent = "N/A";
+                    } else {
+                        gradeDisplay.textContent = (weightedGrade * 100).toFixed(2) + "%";
+                    }
                 }
             }
 
@@ -109,6 +118,48 @@
             document.querySelectorAll('.score-input').forEach(input => {
                 input.addEventListener('input', calculateWeightedGrade);
             });
+
+            const resetButton = document.getElementById('reset');
+            if (resetButton) {
+                resetButton.addEventListener('click', calculateWeightedGradeWait);
+            }
+            function calculateWeightedGradeWait(){
+                setTimeout(calculateWeightedGrade, 100);
+            }
+
+            const addButton = document.getElementById('add');
+            if (addButton) {
+                addButton.addEventListener('click', addRow);
+            }
+            function addRow(){
+                let tbody = document.getElementById('tbody');
+                let insertIndex = Math.max(0, tbody.rows.length - 2);
+                let newRow = tbody.insertRow(insertIndex);
+                newRow.setAttribute('role', 'row');
+                newRow.setAttribute('data-category', 'summative');
+                
+                newRow.innerHTML = `
+                    <td class="category_col"><input type="text" class="category-input" size="10" value="summative" placeholder="Category"></td>
+                    <td class="name_col"><input type="text" class="name-input" size="20" placeholder="Assignment Name"></td>
+                    <td class="score_col"><input type="number" class="score-input" data-denominator="100" size="3" value="0" placeholder="Score"> / <input type="number" class="denom-input" size="3" value="100" placeholder="Total"></td>
+                `;
+                
+                let categoryInput = newRow.querySelector('.category-input');
+                let scoreInput = newRow.querySelector('.score-input');
+                let denomInput = newRow.querySelector('.denom-input');
+                
+                categoryInput.addEventListener('input', function() {
+                    newRow.setAttribute('data-category', this.value.toLowerCase());
+                    calculateWeightedGrade();
+                });
+                
+                denomInput.addEventListener('input', function() {
+                    scoreInput.setAttribute('data-denominator', this.value);
+                    calculateWeightedGrade();
+                });
+                
+                scoreInput.addEventListener('input', calculateWeightedGrade);
+            }
         </script>
     </body>
 </html>
