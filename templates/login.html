@@ -17,5 +17,27 @@
             <input type="password" id="password" name="password" required><br><br>
             <button type="submit">Login</button>
         </form>
+        <div class="loader"></div>
     </body>
+    <script>
+        document.querySelector('form').addEventListener('submit', function() {
+            document.querySelector('.loader').style.display = 'block';
+        });
+    </script>
+    <style>
+        .loader {
+          display: none;
+          border: 4px solid #f3f3f3; /* Light grey */
+          border-top: 4px solid #840028; /* Maroon */
+          border-radius: 50%;
+          width: 30px;
+          height: 30px;
+          animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+    </style>
 </html>

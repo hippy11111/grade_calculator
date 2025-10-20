@@ -121,6 +121,7 @@ def getQuarterAssignmentInfo(link):
     score_numers = []
     score_denoms = []
     current = 0
+    misisng = False
 
     driver.get(link)
     WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//*[@id='scoreTable']/tbody")))
@@ -130,7 +131,19 @@ def getQuarterAssignmentInfo(link):
         category_location = "//*[@id='" + row_id + "']/td[2]/span[2]"
         name_location = "//*[@id='" + row_id + "']/td[3]/span"
         score_location = "//*[@id='" + row_id + "']/td[11]/span"
+        exempt_location = "//*[@id='" + row_id + "']/td[7]/div"
+        excluded_location = "//*[@id='" + row_id + "']/td[10]/div"
         try:
+            # exempt_name = row.find_element(By.XPATH, exempt_location).get_attribute("class") or ""
+            # excluded_name = row.find_element(By.XPATH, excluded_location).get_attribute("class") or ""
+            # print(exempt_location)
+            # print(exempt_name)
+            # print(excluded_name)
+            # print(excluded_location)
+            exempt_elems = row.find_elements(By.XPATH, exempt_location)
+            excluded_elems = row.find_elements(By.XPATH, excluded_location)
+            if exempt_elems or excluded_elems:
+                continue
             category = row.find_element(By.XPATH, category_location).text.lower()
             name = row.find_element(By.XPATH, name_location).text.lower()
             score = row.find_element(By.XPATH, score_location).text.lower()

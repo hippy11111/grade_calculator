@@ -6,7 +6,7 @@
         <title>Main</title>
     </head>
     <body>
-        <h2>Welcome</h2>
+        <h2>Welcome to the Saint Peter's Prep Grade Calculator!</h2>
         <div class="dropdown" id="course_dropdown">
             <form method="POST">
                 <label for="courses">Select a Course:</label>
@@ -19,12 +19,15 @@
                 <select name="mp_selection" id="mp">
                     <option value="Q1" {% if selected_quarter == 'Q1' %}selected{% endif %}>Q1</option>
                     <option value="Q2" {% if selected_quarter == 'Q2' %}selected{% endif %}>Q2</option>
-                    <option value="S1" {% if selected_quarter == 'S1' %}selected{% endif %}>S1</option>
+                    <option value="E1" {% if selected_quarter == 'E1' %}selected{% endif %}>E1</option>
+                   <!-- <option value="S1" {% if selected_quarter == 'S1' %}selected{% endif %}>S1</option> -->
                     <option value="Q3" {% if selected_quarter == 'Q3' %}selected{% endif %}>Q3</option>
                     <option value="Q4" {% if selected_quarter == 'Q4' %}selected{% endif %}>Q4</option>
-                    <option value="S2" {% if selected_quarter == 'S2' %}selected{% endif %}>S2</option>
+                    <option value="E2" {% if selected_quarter == 'E2' %}selected{% endif %}>E2</option>
+                    <!-- <option value="S2" {% if selected_quarter == 'S2' %}selected{% endif %}>S2</option> -->
                 </select>
                 <button type="submit">submit!</button>
+                <div class="loader"></div>
             </form>
         </div>
         <br>
@@ -53,18 +56,29 @@
                 </form>
             </table>
             <p><strong>Live Grade:</strong> <span id="live-grade">Calculating...</span></p>
+            <br>
+            <p><Strong>Summative: </Strong> <span id="summative-grade">Calculating...</span></p>
+            <p><Strong>Skill Development: </Strong> <span id="skill-grade">Calculating...</span></p>
+            <p><Strong>Workmanship: </Strong> <span id="work-grade">Calculating...</span></p>
+        {% endif %}
+        {% if selected_course %}
             <!-- {% if "Q" in selected_quarter %}
 
             {% endif %} -->
 
         {% endif %}
+        <br>
+        <p>If you want your semester grade, do: Q1*0.4 + Q2*0.4 + E1*0.2</p>
+        <p>Or Q3, Q4, E2, if you're in the second semester.</p>
         <script>
             const categoryWeights = {
                 "summative": 0.55,
                 "skill development": 0.30,
                 "workmanship": 0.15
             };
-
+            document.querySelector('form').addEventListener('submit', function() {
+                document.querySelector('.loader').style.display = 'block';
+            })
             function calculateWeightedGrade() {
                 let rows = document.querySelectorAll('tr[data-category]');
                 let categoryTotals = {};  // { category: {earned, possible} }
@@ -88,6 +102,16 @@
                 let weightedGrade = 0;
                 let weightTotal = 0;
 
+                if(categoryTotals["summative"].possible != 0){
+                let summativeGrade = categoryTotals["summative"].earned / categoryTotals["summative"].possible;
+                }
+                if(categoryTotals["skill development"].possible != 0){
+                    let skillGrade = categoryTotals["skill development"].earned / categoryTotals["skill development"].possible;
+                }
+                if(categoryTotals["workmanship"].possible != 0){
+                    let workGrade = categoryTotals["workmanship"].earned / categoryTotals["workmanship"].possible;
+                }
+                                
                 for (let category in categoryTotals) {
                     let earned = categoryTotals[category].earned;
                     let possible = categoryTotals[category].possible;
@@ -112,6 +136,31 @@
                         gradeDisplay.textContent = (weightedGrade * 100).toFixed(2) + "%";
                     }
                 }
+                const summativeDisplay = document.getElementById('summative-grade');
+                if(summativeDisplay) {
+                    if(categoryTotals["summative"].possible === 0){
+                        summativeDisplay.textContent = "N/A";
+                    } else {
+                        summativeDisplay.textContent = ((categoryTotals["summative"].earned / categoryTotals["summative"].possible) * 100).toFixed(2) + "%";
+                    }
+                }
+                const skillDisplay = document.getElementById('skill-grade');
+                if(skillDisplay){
+                    if(categoryTotals["skill development"].possible === 0){
+                        skillDisplay.textContent = "N/A";
+                    } else {
+                        skillDisplay.textContent = ((categoryTotals["skill development"].earned / categoryTotals["skill development"].possible) * 100).toFixed(2) + "%";
+                    }
+                }
+                const workDisplay = document.getElementById('work-grade');
+                if(workDisplay){
+                    if(categoryTotals["workmanship"].possible === 0){
+                        workDisplay.textContent = "N/A";
+                    } else{
+                        workDisplay.textContent = ((categoryTotals["workmanship"].earned / categoryTotals["workmanship"].possible) * 100).toFixed(2) + "%";
+                    }
+                }
+                
             }
 
             window.addEventListener('DOMContentLoaded', calculateWeightedGrade);
@@ -141,8 +190,15 @@
                 newRow.innerHTML = `
                     <td class="category_col"><input type="text" class="category-input" size="10" value="summative" placeholder="Category"></td>
                     <td class="name_col"><input type="text" class="name-input" size="20" placeholder="Assignment Name"></td>
-                    <td class="score_col"><input type="number" class="score-input" data-denominator="100" size="3" value="0" placeholder="Score"> / <input type="number" class="denom-input" size="3" value="100" placeholder="Total"></td>
+                    <td class="score_col"><input type="number" class="score-input" data-denominator="100" size="3" value="" placeholder="Score"> / <input type="number" class="denom-input" size="3" value="100" placeholder="Total"></td>
                 `;
+                let newButton = newRow.insertCell(-1);
+                newButton.innerHTML = `<button type="button" class="remove">Remove</button>`;
+                newButton.querySelector('.remove').addEventListener('click', function() {
+                  this.closest('tr').remove();
+                  calculateWeightedGrade();
+                });
+
                 
                 let categoryInput = newRow.querySelector('.category-input');
                 let scoreInput = newRow.querySelector('.score-input');
@@ -162,4 +218,20 @@
             }
         </script>
     </body>
+    <style>
+        .loader {
+          display: none;
+          border: 4px solid #f3f3f3; /* Light grey */
+          border-top: 4px solid #840028; /* Maroon */
+          border-radius: 50%;
+          width: 30px;
+          height: 30px;
+          animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+    </style>
 </html>

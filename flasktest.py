@@ -35,7 +35,7 @@ def main():
     if not courselist:
         return redirect(url_for("/"))
     selected_course = courselist[0]
-    selected_quarter = "Q2"
+    selected_quarter = "Q1"
     assignments = []
 
     if request.method == "POST":
