@@ -3,10 +3,14 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Main</title>
+        <title>Grade Calculator - Saint Peter's Prep</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     </head>
     <body>
-        <h2>Welcome to the Saint Peter's Prep Grade Calculator!</h2>
+        <div class="main-container">
+            <div class="welcome-message">
+                <h2>Welcome to the Saint Peter's Prep Grade Calculator!</h2>
+            </div>
         <div class="dropdown" id="course_dropdown">
             <form method="POST">
                 <label for="courses">Select a Course:</label>
@@ -67,9 +71,12 @@
             {% endif %} -->
 
         {% endif %}
-        <br>
-        <p>If you want your semester grade, do: Q1*0.4 + Q2*0.4 + E1*0.2</p>
-        <p>Or Q3, Q4, E2, if you're in the second semester.</p>
+            <div class="info-box">
+                <p><strong>Calculate Your Semester Grade:</strong></p>
+                <p>First Semester: Q1 × 0.4 + Q2 × 0.4 + E1 × 0.2</p>
+                <p>Second Semester: Q3 × 0.4 + Q4 × 0.4 + E2 × 0.2</p>
+            </div>
+        </div>
         <script>
             const categoryWeights = {
                 "summative": 0.55,
@@ -218,20 +225,4 @@
             }
         </script>
     </body>
-    <style>
-        .loader {
-          display: none;
-          border: 4px solid #f3f3f3; /* Light grey */
-          border-top: 4px solid #840028; /* Maroon */
-          border-radius: 50%;
-          width: 30px;
-          height: 30px;
-          animation: spin 2s linear infinite;
-        }
-
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-    </style>
 </html>

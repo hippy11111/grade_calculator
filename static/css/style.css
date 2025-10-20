@@ -1,0 +1,373 @@
+/* Saint Peter's Prep Maroon Theme CSS */
+
+:root {
+    --maroon-primary: #840028;
+    --maroon-dark: #5a001b;
+    --maroon-light: #a5002f;
+    --gray-light: #f5f5f5;
+    --gray-medium: #e0e0e0;
+    --gray-dark: #333333;
+    --white: #ffffff;
+    --shadow: 0 2px 8px rgba(132, 0, 40, 0.1);
+    --shadow-hover: 0 4px 16px rgba(132, 0, 40, 0.2);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+    color: var(--gray-dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Header Styling */
+h2, h3 {
+    color: var(--maroon-primary);
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+}
+
+h2 {
+    font-size: 2em;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+    font-size: 1.5em;
+    margin-top: 30px;
+}
+
+/* Login Page Container */
+.login-container {
+    max-width: 450px;
+    margin: 100px auto;
+    background: var(--white);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-hover);
+    border-top: 5px solid var(--maroon-primary);
+}
+
+/* Main Page Container */
+.main-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    background: var(--white);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    border-top: 5px solid var(--maroon-primary);
+}
+
+/* Form Styling */
+form {
+    margin: 20px 0;
+}
+
+label {
+    display: inline-block;
+    margin: 10px 15px 5px 0;
+    color: var(--gray-dark);
+    font-weight: 500;
+    font-size: 0.95em;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"],
+select {
+    padding: 12px 15px;
+    margin: 5px 10px 15px 0;
+    border: 2px solid var(--gray-medium);
+    border-radius: 6px;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    background: var(--white);
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+select:focus {
+    outline: none;
+    border-color: var(--maroon-primary);
+    box-shadow: 0 0 0 3px rgba(132, 0, 40, 0.1);
+}
+
+/* Button Styling */
+button {
+    background: var(--maroon-primary);
+    color: var(--white);
+    padding: 12px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+    margin: 5px;
+}
+
+button:hover {
+    background: var(--maroon-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button[type="reset"] {
+    background: var(--gray-medium);
+    color: var(--gray-dark);
+}
+
+button[type="reset"]:hover {
+    background: #c0c0c0;
+}
+
+.remove {
+    background: #c62828;
+    padding: 8px 16px;
+    font-size: 0.9em;
+}
+
+.remove:hover {
+    background: #b71c1c;
+}
+
+/* Error Message */
+p[style*="color: red"], .error-message {
+    background: #ffebee;
+    color: #c62828;
+    padding: 12px 20px;
+    border-radius: 6px;
+    border-left: 4px solid #c62828;
+    margin: 15px 0;
+    font-weight: 500;
+}
+
+/* Dropdown Section */
+.dropdown {
+    background: var(--gray-light);
+    padding: 25px;
+    border-radius: 8px;
+    margin: 20px 0;
+    box-shadow: var(--shadow);
+}
+
+.dropdown form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.dropdown select {
+    min-width: 200px;
+    margin-right: 10px;
+}
+
+/* Table Styling */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    background: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.table thead {
+    background: var(--maroon-primary);
+    color: var(--white);
+}
+
+.table th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 1em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table tbody tr {
+    border-bottom: 1px solid var(--gray-medium);
+    transition: background-color 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background: #fff5f7;
+}
+
+.table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.table td {
+    padding: 15px;
+    vertical-align: middle;
+}
+
+.table input[type="text"],
+.table input[type="number"] {
+    margin: 0;
+    padding: 8px 10px;
+    width: auto;
+}
+
+.score-input {
+    width: 60px !important;
+    text-align: center;
+    font-weight: 600;
+    color: var(--maroon-primary);
+}
+
+.category-input {
+    width: 120px !important;
+}
+
+.name-input {
+    width: 200px !important;
+}
+
+.denom-input {
+    width: 60px !important;
+    text-align: center;
+}
+
+/* Grade Display */
+#live-grade,
+#summative-grade,
+#skill-grade,
+#work-grade {
+    color: var(--maroon-primary);
+    font-weight: 700;
+    font-size: 1.3em;
+}
+
+p strong, p Strong {
+    color: var(--gray-dark);
+    font-weight: 600;
+}
+
+/* Info Boxes */
+.info-box {
+    background: linear-gradient(135deg, var(--maroon-primary) 0%, var(--maroon-dark) 100%);
+    color: var(--white);
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    box-shadow: var(--shadow);
+}
+
+.info-box p {
+    margin: 8px 0;
+    font-size: 0.95em;
+}
+
+/* Loader Animation */
+.loader {
+    display: none;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--maroon-primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .login-container,
+    .main-container {
+        padding: 25px;
+        margin: 20px auto;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    .dropdown form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .dropdown select {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .table {
+        font-size: 0.9em;
+    }
+
+    .table th,
+    .table td {
+        padding: 10px;
+    }
+
+    .table input[type="text"],
+    .table input[type="number"] {
+        font-size: 0.9em;
+    }
+}
+
+/* Login Form Specific */
+.login-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-container input {
+    width: 100%;
+    margin: 5px 0 15px 0;
+}
+
+.login-container button {
+    margin-top: 10px;
+    width: 100%;
+}
+
+/* Welcome Message */
+.welcome-message {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, var(--maroon-primary) 0%, var(--maroon-light) 100%);
+    color: var(--white);
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: var(--shadow);
+}
+
+/* Additional spacing and polish */
+br {
+    line-height: 2;
+}
+
+p {
+    margin: 10px 0;
+}
