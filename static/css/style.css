@@ -38,7 +38,10 @@ h2, h3 {
 h2 {
     font-size: 2em;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-    color: var(--gray-light)
+}
+
+#welcome-header{
+    color: var(--gray-light);
 }
 
 h3 {
@@ -260,7 +263,7 @@ p[style*="color: red"], .error-message {
 }
 
 p strong, p Strong {
-    color: var(--gray-dark);
+    /* color: var(--gray-dark); */
     font-weight: 600;
 }
 
@@ -277,6 +280,7 @@ p strong, p Strong {
 .info-box p {
     margin: 8px 0;
     font-size: 0.95em;
+    color: var(--white)
 }
 
 /* Loader Animation */
